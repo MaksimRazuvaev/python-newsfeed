@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select, fu
 from sqlalchemy.orm import relationship, column_property
 
 
+
 class Post(Base):
   __tablename__ = 'posts'
   id = Column(Integer, primary_key=True)
@@ -15,8 +16,9 @@ class Post(Base):
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
 
 # check it for TS while testing DB - FE connection. It was problem with seeds.py exec.
+# select([func.count(Vote.id)]) is obsolete. Need to remove [] to make it work
   vote_count = column_property(
-    select([func.count(Vote.id)]).where(Vote.post_id == id)
+    select(func.count(Vote.id)).where(Vote.post_id == id)
   )
 
   user = relationship('User')
